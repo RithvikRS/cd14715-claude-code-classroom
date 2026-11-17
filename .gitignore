@@ -31,4 +31,5 @@ tmp*
 
 #claude settings
 .claude/
-.claude/settings.local.json
+!project/starter/.claude/
+**/.claude/settings.local.json

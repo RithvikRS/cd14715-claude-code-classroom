@@ -49,6 +49,13 @@ async function main() {
     process.exit(1);
   }
 
+  if (!process.env.GITHUB_TOKEN) {
+    console.error(`GITHUB_TOKEN is not set. The GitHub MCP server needs it to read the pull request.
+  Create a personal access token at https://github.com/settings/tokens and add it to .env:
+  GITHUB_TOKEN=ghp_your-token-here`);
+    process.exit(1);
+  }
+
   try {
     const orchestrator = new CodeReviewOrchestrator();
     const report = await orchestrator.reviewPullRequest(owner, repo, prNumber);

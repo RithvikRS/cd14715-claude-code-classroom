@@ -24,7 +24,7 @@ export const mcpServersConfig = {
    * GitHub MCP Server
    * Provides tools for GitHub API operations
    *
-   * GITHUB_TOKEN is optional (recommended for private repos and higher rate limits).
+   * main.ts refuses to start without GITHUB_TOKEN.
    * The server expects it as GITHUB_PERSONAL_ACCESS_TOKEN.
    */
   github: {

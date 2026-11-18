@@ -28,7 +28,7 @@ Other details:
 - Node.js 20.19+, 22.13+ or 24+. `package.json` says >=18, but the test runner (Vitest 4) and the ESLint MCP server need these versions.
 - npm. The MCP servers are started with npx, which downloads them on the first run.
 - Claude access through one of: the Vocareum workspace, your own Anthropic API key, a Vocareum key, or AWS Bedrock.
-- A GitHub personal access token (optional, recommended).
+- A GitHub personal access token.
 
 ## Setup
 
@@ -65,7 +65,7 @@ The CLI loads `.env` from the current directory, so keep it in `project/starter`
 | `ANTHROPIC_BASE_URL` | Only for a Vocareum key outside the workspace | API endpoint. |
 | `ANTHROPIC_MODEL` | Yes | Model for the orchestrator and all subagents, for example `claude-sonnet-4-5-20250929`. |
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` | Only for Bedrock | When both keys are set, Bedrock is used instead of the Anthropic API, and `AWS_REGION` is required. |
-| `GITHUB_TOKEN` | No, recommended | Passed to the GitHub MCP server. Without it GitHub allows 60 requests an hour and code search doesn't work. The `repo` scope is only needed for private repositories. |
+| `GITHUB_TOKEN` | Yes | Passed to the GitHub MCP server. The CLI exits on startup if it's missing. The `repo` scope is only needed for private repositories. |
 | `PROJECT_ROOT` | No | Absolute path to `project/starter` (the folder with `.claude/skills/`). Used as the agent's working directory. Defaults to the current directory. |
 | `LOG_LEVEL` | No | `error`, `warn`, `info` (default) or `debug`. |
 | `NODE_ENV` | No | `production` turns off log output to the console. The files in `logs/` are still written. |
@@ -165,8 +165,8 @@ Both AWS keys are set, so the CLI uses Bedrock. Add `AWS_REGION`, or remove the 
 **`Failed to spawn Claude Code process: spawn ... ENOENT`**
 `PROJECT_ROOT` points to a folder that doesn't exist, usually the Vocareum path from `.env.example`. Set it to your `project/starter` path or delete the line. The message names the Node executable, but the missing path is the working directory.
 
-**GitHub rate limits or failed code searches**
-Set `GITHUB_TOKEN`. When code search fails, the test coverage agent checks the `tests/` and `test/` directories instead.
+**`GITHUB_TOKEN is not set.`**
+Add a GitHub personal access token to `.env` as `GITHUB_TOKEN=...`. You can create one at https://github.com/settings/tokens.
 
 **The first run is slow, or the GitHub MCP server fails to start**
 npx downloads both MCP servers the first time, which makes the first run slower. If the GitHub server can't start, the run stops after three attempts with:
